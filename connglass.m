@@ -35,6 +35,7 @@ args.addParameter('minlinewidth',0);
 args.addParameter('maxlinewidth',10);
 args.addParameter('mindotsize',2);
 args.addParameter('maxdotsize',10);
+args.addParameter('maxalpha',.5);
 args.addParameter('renderviews',[]);
 
 args.parse(varargin{:});
@@ -50,6 +51,7 @@ maxlinewidth=args.maxlinewidth;
 
 mindotsize=args.mindotsize;
 maxdotsize=args.maxdotsize;
+maxalpha=args.maxalpha;
 
 clim=[nanmin(Cmat(:)) nanmax(Cmat(:))];
 if(~isempty(args.clim))
@@ -113,7 +115,7 @@ glassparams={'linestyle','none','facecolor',[1 1 1]*.5,'facealpha',.1};
 
 hpglassL=[];
 for i = 1:numel(glassbrain_info.vertices)
-    hpglassL=patch('faces',glassbrain_info.faces{i},'vertices',glassbrain_info.vertices{i},glassparams{:});
+    hpglassL=patch('faces',glassbrain_info.faces{i},'vertices',glassbrain_info.vertices{i},glassparams{:},'tag','brainsurf');
 end
 
 axglass=get(hpglassL(1),'parent');
@@ -191,7 +193,7 @@ for i = 1:size(Cmat,1)
         path12=[p1; mean([p1; p2],1); p2];
         %fill3(path12(:,1),path12(:,2),path12(:,3),'w','linewidth',Cthick(i,j)+2,'edgecolor',flatten(Ccolor(i,j,:)),'edgealpha',.5*valscale(i,j));
         [hcyl, hsph] = tubeplot(path12,(Cthick(i,j)+2)/4,[0 0 0],{'spheres',false},...
-            'facecolor',flatten(Ccolor(i,j,:)),'linestyle','none','facealpha',.5*valscale(i,j));
+            'facecolor',flatten(Ccolor(i,j,:)),'linestyle','none','facealpha',maxalpha*valscale(i,j));
     end
 end
 view(view_azel);

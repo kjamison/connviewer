@@ -27,6 +27,8 @@ args.addParameter('threshpercentile',90);
 args.addParameter('minwidth',0);
 args.addParameter('maxwidth',10);
 args.addParameter('showlabels',true);
+args.addParameter('circlecolor',[.85 .85 .85]);
+args.addParameter('backgroundcolor',[1 1 1]);
 args.addParameter('axes',[]);
 
 args.parse(varargin{:});
@@ -63,7 +65,8 @@ if(ischar(cmap))
 end
 
 showlabels=args.showlabels;
-
+circlecolor=args.circlecolor;
+backgroundcolor=args.backgroundcolor;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if(size(Cmat,1)==numroi && size(Cmat,2)==numroi)
     %Input should be symmetric
@@ -114,7 +117,7 @@ if(~isempty(args.axes))
     axes(args.axes);
     fig=args.axes;
 else
-    fig=figure('color',[1 1 1]);
+    fig=figure('color',backgroundcolor);
 end
 
 %axcirc=subplot(1,2,2);
@@ -126,18 +129,21 @@ set(gca,'xlim',[-1 1]*1.25,'ylim',[-1 1]*1.25);
 
 if(showlabels)
     for i = 1:numel(roiorder)
-        if(islh(i))
-            ht=text(textrad*roixy(i,1),textrad*roixy(i,2),roiname_nohemi{i},'rotation',180+roitheta(i)*180/pi,...
-                'horizontalalignment','right');
+        if(mod(roitheta(i),2*pi)>=pi/2 && mod(roitheta(i),2*pi)<=3*pi/2)
+            textrotation=roitheta(i)+pi;
+            textalign='right';
         else
-            ht=text(textrad*roixy(i,1),textrad*roixy(i,2),roiname_nohemi{i},'rotation',roitheta(i)*180/pi);
+            textrotation=roitheta(i);
+            textalign='left';
         end
+        ht=text(textrad*roixy(i,1),textrad*roixy(i,2),roiname_nohemi{i},'rotation',textrotation*180/pi,'horizontalalignment',textalign);
+
         set(ht,'color',lobecolor(roilobe_idx(i),:));
         
         %set(ht,'backgroundcolor',[1 1 1]*0);
     end
 end
-fill(cos(linspace(0,2*pi,100)),sin(linspace(0,2*pi,100)),[1 1 1]*.85,'linestyle','none');
+fill(cos(linspace(0,2*pi,100)),sin(linspace(0,2*pi,100)),circlecolor,'linestyle','none');
 axis off;
 
 
