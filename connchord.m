@@ -42,6 +42,9 @@ lobe86=roi_info.roi_lobes;
 lobe_order=roi_info.lobe_order;
 
 lobecolor=hsv(numel(lobe_order));
+if(isfield(roi_info,'lobe_color') && ~isempty(roi_info.lobe_color))
+    lobecolor=roi_info.lobe_color;
+end
 if(~isempty(args.lobecolor))
     lobecolor=args.lobecolor;
 end
@@ -103,7 +106,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 roiorder=roi_info.reorder_idx;
-roitheta=roi_info.reorder_roi_theta;
+roitheta=reshape(roi_info.reorder_roi_theta,[],1);
 roihemi=roi_info.roi_hemi(roiorder);
 roiname_nohemi=roi_info.roi_names_nohemi(roiorder);
 roixy=[cos(roitheta) sin(roitheta)];

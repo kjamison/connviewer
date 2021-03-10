@@ -105,9 +105,9 @@ roixyz86=roixyz;
 
 %%
 
-%[A,dims,scales,bpp,endian,hdr] = read_avw_and_header('/Users/kwj5/Source/nemo/website/atlases/shen268_MNI1mm_dil1.nii.gz');
+[A,dims,scales,bpp,endian,hdr] = read_avw_and_header('/Users/kwj5/Source/nemo/website/atlases/shen268_MNI1mm_dil1.nii.gz');
 
-[A,dims,scales,bpp,endian,hdr] = read_avw_and_header('/Users/kwj5/Source/nemo/website/atlases/cc400_new1mm_seq392.nii.gz');
+%[A,dims,scales,bpp,endian,hdr] = read_avw_and_header('/Users/kwj5/Source/nemo/website/atlases/cc400_new1mm_seq392.nii.gz');
 
 Aidx=find(A(:)>0);
 [vi, vj, vk]=ind2sub(size(A),Aidx);
@@ -129,13 +129,15 @@ hemis=lobes;
 names=lobes;
 for i = 1:numel(uval)
     m=mode(A86(A==uval(i) & A86>0));
-    isshen268nan=numel(uval) && isnan(m);
+    isshen268nan=numel(uval)==268 && isnan(m);
     if(isshen268nan)
         %brainstem doesn't math any fs86
         %assign it to cerebellum for now
+        return;
         m=18;
         lobes{i}=lobe86{m};
         names{i}=sprintf('%s%d',name86{m},1+sum(regexpmatch(names,['^' name86{m} '[0-9]+$'])));
+        fprintf('subcortexnan: %s\n',names{i});
         %lobes{i}='rh-subcortex';
         %names{i}=sprintf('%s%d',name86{m},1+sum(regexpmatch(names,['^' name86{m} '[0-9]+$'])));
         %names{i}='subcortexthing';
