@@ -28,6 +28,8 @@ args.addParameter('minwidth',0);
 args.addParameter('maxwidth',10);
 args.addParameter('showlabels',true);
 args.addParameter('circlecolor',[.85 .85 .85]);
+args.addParameter('circleoutlinecolor',[.85 .85 .85]);
+args.addParameter('circleoutlinewidth',0);
 args.addParameter('backgroundcolor',[1 1 1]);
 args.addParameter('axes',[]);
 
@@ -69,6 +71,8 @@ end
 
 showlabels=args.showlabels;
 circlecolor=args.circlecolor;
+circleoutlinecolor=args.circleoutlinecolor;
+circleoutlinewidth=args.circleoutlinewidth;
 backgroundcolor=args.backgroundcolor;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if(size(Cmat,1)==numroi && size(Cmat,2)==numroi)
@@ -147,6 +151,9 @@ if(showlabels)
     end
 end
 fill(cos(linspace(0,2*pi,100)),sin(linspace(0,2*pi,100)),circlecolor,'linestyle','none');
+if(circleoutlinewidth>0)
+	plot(cos(linspace(0,2*pi,100)),sin(linspace(0,2*pi,100)),'color',circleoutlinecolor,'linewidth',circleoutlinewidth);
+end
 axis off;
 
 
