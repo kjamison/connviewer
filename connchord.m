@@ -30,6 +30,8 @@ args.addParameter('showlabels',true);
 args.addParameter('circlecolor',[.85 .85 .85]);
 args.addParameter('circleoutlinecolor',[.85 .85 .85]);
 args.addParameter('circleoutlinewidth',0);
+args.addParameter('dotwidth',10);
+args.addParameter('dotcolor',[0 0 0]);
 args.addParameter('backgroundcolor',[1 1 1]);
 args.addParameter('axes',[]);
 
@@ -234,7 +236,16 @@ for i = 1:size(C_roiorder,1)
             'linewidth',Cthick(i,j),'edgecolor',flatten(Ccolor(i,j,:)),'edgealpha',.5*valscale(i,j));
     end
 end
-plot(roixy(:,1),roixy(:,2),'ko','markerfacecolor','k','tag','circpoint');
+
+dotarea=pi*(args.dotwidth/2).^2;
+dotcolor=args.dotcolor;
+if(numel(dotarea)==size(Cmat,1))
+    dotarea=dotarea(roiorder);
+end
+if(numel(dotcolor)==size(Cmat,1))
+    dotcolor=dotcolor(roiorder);
+end
+scatter(roixy(:,1),roixy(:,2),dotarea,dotcolor,'filled','tag','circpoint');
 
 set(gca,'clim',clim);
 colormap(cmap);
